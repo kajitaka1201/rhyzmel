@@ -16,6 +16,8 @@ export async function uploadFile() {
           },
         },
       ],
+      excludeAcceptAllOption: true,
+      startIn: "music",
     });
   }
   try {
