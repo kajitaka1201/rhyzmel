@@ -3,8 +3,8 @@ import PlayList from "./playlist";
 
 test("renders playlist with files", () => {
   const files = [{ name: "file1.mp3" }, { name: "file2.mp3" }, { name: "file3.mp3" }] as File[];
-
-  render(<PlayList files={files} />);
+  const setPlayingIndex = jest.fn();
+  render(<PlayList files={files} playingIndex={0} setPlayingIndex={setPlayingIndex} />);
 
   // Assert that the "Now Playing" heading is rendered
   const headingElement = screen.getByText(/Now Playing/i);

@@ -25,6 +25,7 @@
     --ring: 45.9 96.7% 64.5%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 45.9 50% 5%;
     --foreground: 45.9 5% 90%;
@@ -53,6 +54,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
