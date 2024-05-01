@@ -1,4 +1,4 @@
-import { TrackPreviousIcon, PlayIcon, TrackNextIcon } from "@radix-ui/react-icons";
+import { TrackPreviousIcon, PlayIcon, TrackNextIcon, PauseIcon } from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import MusicPosition from "../ui/music-position";
@@ -7,10 +7,16 @@ export default function Player({
   files,
   playingIndex,
   setPlayingIndex,
+  play,
+  stop,
+  playing,
 }: {
   files: File[];
   playingIndex: number;
   setPlayingIndex: React.Dispatch<React.SetStateAction<number>>;
+  play: () => void;
+  stop: () => void;
+  playing: boolean;
 }) {
   const [progress, setProgress] = useState<number>(0);
   useEffect(() => {
@@ -26,8 +32,8 @@ export default function Player({
           <Button variant="ghost" onClick={() => setPlayingIndex(i => Math.max(i - 1, 0))}>
             <TrackPreviousIcon />
           </Button>
-          <Button variant="ghost">
-            <PlayIcon />
+          <Button variant="ghost" onClick={() => (playing ? stop() : play())}>
+            {playing ? <PauseIcon /> : <PlayIcon />}
           </Button>
           <Button
             variant="ghost"

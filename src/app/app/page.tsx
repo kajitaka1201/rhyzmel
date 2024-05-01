@@ -4,6 +4,7 @@ import { uploadFile } from "@/lib/upload";
 import React, { useEffect, useState } from "react";
 import PlayList from "@/components/ui-elements/playlist";
 import Player from "@/components/ui-elements/player";
+import useAudio from "@/hooks/audio";
 
 export default function App() {
   const [files, setFiles] = useState<File[]>([]);
@@ -17,18 +18,32 @@ export default function App() {
       }
     );
   }, []);
+  const { loadAudioFile, playAudio, stopAudio, playing } = useAudio();
   function upload() {
     uploadFile().then(res => {
       console.log(res);
       setFiles(f => [...f, ...res.files]);
     });
   }
+  useEffect(() => {
+    if (!files.length || typeof files[playingIndex] !== "object") return;
+    loadAudioFile(files[playingIndex]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [files, playingIndex]);
+
   return (
     <main className="flex flex-1">
       {files.length ? (
         <>
           <PlayList files={files} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} />
-          <Player files={files} playingIndex={playingIndex} setPlayingIndex={setPlayingIndex} />
+          <Player
+            files={files}
+            playingIndex={playingIndex}
+            setPlayingIndex={setPlayingIndex}
+            play={playAudio}
+            stop={stopAudio}
+            playing={playing}
+          />
         </>
       ) : (
         <Button onClick={upload}>ファイル読み込み</Button>
