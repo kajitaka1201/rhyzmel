@@ -1,4 +1,5 @@
 import React from "react";
+import Slider from "./slider";
 
 interface MusicPositionProps {
   duration: number;
@@ -15,13 +16,12 @@ function MusicPosition({ duration, currentTime, onChange }: MusicPositionProps) 
   return (
     <div className="flex w-full items-center gap-2">
       <span className="flex-none">{formatTime(currentTime)} </span>
-      <input
-        type="range"
+      <Slider
         min={0}
         max={duration}
         value={currentTime}
         onChange={handleProgressChange}
-        className="h-1 flex-1 appearance-none rounded-full bg-muted accent-primary"
+        className="flex-1"
       />
       <span className="flex-none">{formatTime(duration)}</span>
     </div>

@@ -1,8 +1,16 @@
-import { TrackPreviousIcon, PlayIcon, TrackNextIcon, PauseIcon } from "@radix-ui/react-icons";
+import {
+  TrackPreviousIcon,
+  PlayIcon,
+  TrackNextIcon,
+  PauseIcon,
+  SpeakerLoudIcon,
+  SpeakerOffIcon,
+} from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import MusicPosition from "../ui/music-position";
 import { useGlobalAudioPlayer } from "react-use-audio-player";
+import Slider from "../ui/slider";
 
 export default function Player({
   files,
@@ -18,7 +26,18 @@ export default function Player({
   useEffect(() => {
     setProgress(0);
   }, [playingIndex]);
-  const { load, play, pause, playing, seek, getPosition } = useGlobalAudioPlayer();
+  const {
+    load,
+    play,
+    pause,
+    playing,
+    seek,
+    getPosition,
+    volume,
+    setVolume,
+    muted,
+    mute: setMuted,
+  } = useGlobalAudioPlayer();
   useEffect(() => {
     (async () => {
       const duration = await new Promise(resolve => {
@@ -68,19 +87,37 @@ export default function Player({
       <img alt="now playing" width={320} height={320} className="bg-white" />
       <h2 className="text-xl">{files[playingIndex]?.name}</h2>
       <div className="w-full">
-        <nav className="flex justify-center">
-          <Button variant="ghost" onClick={() => setPlayingIndex(i => Math.max(i - 1, 0))}>
-            <TrackPreviousIcon />
-          </Button>
-          <Button variant="ghost" onClick={playing ? pause : play}>
-            {playing ? <PauseIcon /> : <PlayIcon />}
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={() => setPlayingIndex(i => Math.min(i + 1, files.length - 1))}>
-            <TrackNextIcon />
-          </Button>
-        </nav>
+        <div className="relative flex justify-between">
+          <nav className="flex items-center gap-2">
+            <Button onClick={() => setMuted(!muted)} variant="ghost" className="">
+              {muted ? <SpeakerOffIcon /> : <SpeakerLoudIcon />}
+            </Button>
+            <Slider
+              disabled={muted}
+              type="range"
+              value={volume * 100}
+              max={100}
+              className=""
+              onChange={(e: any) => {
+                setVolume(Number(e.target.value) / 100);
+              }}
+            />
+          </nav>
+          <nav className="absolute left-0 right-0 mx-auto flex justify-center">
+            <Button variant="ghost" onClick={() => setPlayingIndex(i => Math.max(i - 1, 0))}>
+              <TrackPreviousIcon />
+            </Button>
+            <Button variant="ghost" onClick={playing ? pause : play}>
+              {playing ? <PauseIcon /> : <PlayIcon />}
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => setPlayingIndex(i => Math.min(i + 1, files.length - 1))}>
+              <TrackNextIcon />
+            </Button>
+          </nav>
+          <nav></nav>
+        </div>
         <MusicPosition
           duration={Math.round(duration)}
           currentTime={Math.round(progress)}
