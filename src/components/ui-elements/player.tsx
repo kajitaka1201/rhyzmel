@@ -46,6 +46,10 @@ export default function Player({
       });
       load(dataURL, {
         html5: true,
+        autoplay: true,
+        onend: () => {
+          setPlayingIndex(i => Math.min(i + 1, files.length - 1));
+        },
       });
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
