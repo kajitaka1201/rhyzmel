@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   },
   description: "PC向け音声再生サイトです",
   manifest: "/manifest.json",
+  verification: {
+    // cspell: disable-next-line
+    google: "FhajSGsTRj5nzX9KNqpV8Q0VCWzLMQ1sgjscBh4umlw",
+  },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
