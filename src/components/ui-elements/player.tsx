@@ -11,6 +11,13 @@ import { Button } from "../ui/button";
 import MusicPosition from "../ui/music-position";
 import { useGlobalAudioPlayer } from "react-use-audio-player";
 import Slider from "../ui/slider";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 export default function Player({
   files,
@@ -37,6 +44,8 @@ export default function Player({
     setVolume,
     muted,
     mute: setMuted,
+    rate,
+    setRate,
   } = useGlobalAudioPlayer();
   useEffect(() => {
     (async () => {
@@ -116,7 +125,24 @@ export default function Player({
               <TrackNextIcon />
             </Button>
           </nav>
-          <nav></nav>
+          <nav>
+            <Select
+              value={rate.toString()}
+              onValueChange={v => {
+                setRate(Number(v));
+              }}>
+              <SelectTrigger className="">
+                <SelectValue placeholder="speed" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="0.5">x0.5</SelectItem>
+                <SelectItem value="1">x1</SelectItem>
+                <SelectItem value="1.2">x1.2</SelectItem>
+                <SelectItem value="1.5">x1.5</SelectItem>
+                <SelectItem value="2">x2</SelectItem>
+              </SelectContent>
+            </Select>
+          </nav>
         </div>
         <MusicPosition
           duration={Math.round(duration)}
